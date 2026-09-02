@@ -212,9 +212,15 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
     // stop execution of program if stack pointer == stack size:
     case ret:
       if (registers[6] == STACK_SIZE) {
+        // if: stack pointer back at its initial position, exit program
         exit(0);
+      } else {
+        // else: pop the return address from stack and return it as the next program counter
+        unsigned int return_address = *((unsigned int*)(memory + registers[6]));
+
+        registers[6] += 4;
+        return return_address;
       }
-      break;
 
     // push a register value onto the stack:
     case pushl:
