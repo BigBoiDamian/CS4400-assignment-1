@@ -194,6 +194,16 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       registers[instr.first_register]  = (unsigned int)registers[instr.first_register] >> 1;
       break;
 
+    // move a 4-byte register value into memory:
+    case movl_reg_deref:
+      // treat as int bc we want to store 4 bytes, and memory is a byte array
+      *((int*)(memory + registers[instr.second_register] + instr.immediate)) = registers[instr.first_register];
+        break;
+
+    // move a 4-byte value from memory into a register:
+    case movl_deref_reg:
+      registers[instr.second_register] = *((int*)(memory + registers[instr.first_register] + instr.immediate));
+
 
     // TODO: Implement remaining instructions
 
