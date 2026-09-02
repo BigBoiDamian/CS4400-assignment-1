@@ -152,30 +152,34 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
   // divide by 4 to get the index into the instructions array
   instruction_t instr = instructions[program_counter / 4];
   
-  switch(instr.opcode)
-  {
-  case subl:
-    registers[instr.first_register] = registers[instr.first_register] - instr.immediate;
-    break;
+  switch(instr.opcode) {
+    case subl:
+      registers[instr.first_register] = registers[instr.first_register] - instr.immediate;
+      break;
 
-  case addl_reg_reg:
-    registers[instr.second_register] = registers[instr.first_register] + registers[instr.second_register];
-    break;
+    case addl_reg_reg:
+      registers[instr.second_register] = registers[instr.first_register] + registers[instr.second_register];
+      break;
 
-  case printr:
-    printf("%d (0x%x)\n", registers[instr.first_register], registers[instr.first_register]);
-    break;
+    case printr:
+      printf("%d (0x%x)\n", registers[instr.first_register], registers[instr.first_register]);
+      break;
 
-  case readr:
-    scanf("%d", &(registers[instr.first_register]));
-    break;
+    case readr:
+      scanf("%d", &(registers[instr.first_register]));
+      break;
 
-  // add immediate to first register:
-  case addl_imm_reg:
-    registers[instr.first_register] = registers[instr.first_register] + instr.immediate;
-    break;
+    // add immediate to a register:
+    case addl_imm_reg:
+      registers[instr.first_register] = registers[instr.first_register] + instr.immediate;
+      break;
 
-  // TODO: Implement remaining instructions
+    // put immediate into a register:
+    case movl_imm_reg:
+      registers[instr.first_register] = instr.immediate;
+      break;
+
+    // TODO: Implement remaining instructions
 
   }
 
