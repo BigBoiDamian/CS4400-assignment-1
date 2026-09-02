@@ -203,6 +203,7 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
     // move a 4-byte value from memory into a register:
     case movl_deref_reg:
       registers[instr.second_register] = *((int*)(memory + registers[instr.first_register] + instr.immediate));
+      break;
 
 
     // TODO: Implement remaining instructions
