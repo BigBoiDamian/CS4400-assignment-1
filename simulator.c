@@ -189,6 +189,11 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       registers[instr.second_register] = registers[instr.first_register];
       break;
 
+    // shift right logical (unsigned) the value in a register by 1 and store in same register:
+    case shrl:
+      registers[instr.first_register]  = (unsigned int)registers[instr.first_register] >> 1;
+      break;
+
 
     // TODO: Implement remaining instructions
 
