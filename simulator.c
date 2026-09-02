@@ -157,16 +157,23 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
   case subl:
     registers[instr.first_register] = registers[instr.first_register] - instr.immediate;
     break;
+
   case addl_reg_reg:
     registers[instr.second_register] = registers[instr.first_register] + registers[instr.second_register];
     break;
+
   case printr:
     printf("%d (0x%x)\n", registers[instr.first_register], registers[instr.first_register]);
     break;
+
   case readr:
     scanf("%d", &(registers[instr.first_register]));
     break;
 
+  // add immediate to first register:
+  case addl_imm_reg:
+    registers[instr.first_register] = registers[instr.first_register] + instr.immediate;
+    break;
 
   // TODO: Implement remaining instructions
 
