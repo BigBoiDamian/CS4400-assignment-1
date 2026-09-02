@@ -205,8 +205,17 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       registers[instr.second_register] = *((int*)(memory + registers[instr.first_register] + instr.immediate));
       break;
 
+    // jump to a new instruction by adding the immediate to the program counter
+    case jmp:
+      return program_counter + 4 + instr.immediate;
 
-    // TODO: Implement remaining instructions
+    // stop execution of program if stack pointer == stack size:
+    case ret:
+      if (registers[6] == STACK_SIZE) {
+        exit(0);
+      }
+      break;
+
 
   }
 
