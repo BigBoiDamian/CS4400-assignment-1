@@ -220,11 +220,20 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
     case pushl:
       // decrease stack pointer by 4 (size of int)
       registers[6] -= 4;
-      // store register val at the new stack pntr location
+      // store register val at the new stack pointer location
       *((int*)(memory + registers[6])) = registers[instr.first_register];
       break;
 
+    // pop a val from the stack into a register:
+    case popl:
+      // load the val at stack pointer into the register
+      registers[instr.first_register] = *((int*)(memory + registers[6]));
+      // incr stack pointer by 4 (size of int)
+      registers[6] += 4;
+      break;
+
   }
+
 
   // TODO: Do not always return program_counter + 4
   //       Some instructions jump elsewhere
