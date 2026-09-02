@@ -184,6 +184,10 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       registers[instr.second_register] = registers[instr.first_register] * registers[instr.second_register];
       break;
 
+    // move the value from one register to another:
+    case movl_reg_reg:
+      registers[instr.second_register] = registers[instr.first_register];
+      break;
 
 
     // TODO: Implement remaining instructions
