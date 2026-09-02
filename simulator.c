@@ -106,14 +106,26 @@ int main(int argc, char** argv)
 */
 instruction_t* decode_instructions(unsigned int* bytes, unsigned int num_instructions)
 {
-  // TODO: Don't return NULL
-  instruction_t* retval = NULL;
 
-  /*
-  int i;
-  for(i = ...){
-    retval[i] = (fill in fields based on raw bits);
-  */
+  instruction_t* retval = (instruction_t*)malloc(sizeof(instruction_t) * num_instructions);
+
+  unsigned int i;
+
+  // decode every i instruction:
+  for(i = 0; i < num_instructions; i++) {
+
+    // extract opcode (bits 31-27):
+    retval[i].opcode =(bytes[i] >> 27) & 0x1F;
+
+    // extract first register (bits 26-22):
+    retval[i].first_register = (bytes[i] >> 22) & 0x1F;
+
+    // extract second register (bits 21-17):
+    retval[i].second_register = (bytes[i] >> 17) & 0x1F;
+
+    // extract immediate (bits 15-0):
+    retval[i].immediate = (int16_t)(bytes[i] & 0xFFFF);
+  }
     
   return retval;
 }
