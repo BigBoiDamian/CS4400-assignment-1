@@ -216,6 +216,13 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       }
       break;
 
+    // push a register value onto the stack:
+    case pushl:
+      // decrease stack pointer by 4 (size of int)
+      registers[6] -= 4;
+      // store register val at the new stack pntr location
+      *((int*)(memory + registers[6])) = registers[instr.first_register];
+      break;
 
   }
 
