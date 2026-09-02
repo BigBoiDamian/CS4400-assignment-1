@@ -238,6 +238,17 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       registers[6] += 4;
       break;
 
+    // push the return address onto the stack and jump to a new instruction
+    case call:
+      // make room on stack for return addr
+      registers[6] -= 4;
+
+      // store the return addr of the next instruction (program_counter +4)
+      *((unsigned int*)(memory + registers[6])) = program_counter + 4;
+
+      // jump to the func being called
+      return program_counter + 4 + instr.immediate;
+
   }
 
 
