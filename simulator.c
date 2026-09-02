@@ -179,6 +179,13 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       registers[instr.first_register] = instr.immediate;
       break;
 
+    // multiply two registers and store the result in 2nd register:
+    case imull:
+      registers[instr.second_register] = registers[instr.first_register] * registers[instr.second_register];
+      break;
+
+
+
     // TODO: Implement remaining instructions
 
   }
