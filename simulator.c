@@ -249,6 +249,47 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       // jump to the func being called
       return program_counter + 4 + instr.immediate;
 
+    case cmpl: {
+
+      // use unsigned int so subtraction cant cause overflow
+      unsigned int reg1 = (unsigned int)registers[instr.first_register];
+      unsigned int reg2 = (unsigned int)registers[instr.second_register];
+
+      // cmpl preforms reg2 - reg1 w/o changing either register
+      unsigned int result = reg2 - reg1;
+
+
+      // start w conditional flags cleared
+      unsigned int flags = 0;
+
+      // carry flag: unsigned borrow occurred (reg2 < reg1)
+      if (reg2 < reg1) {
+        flags |= 0x1;
+      }
+
+      // zero flag: subtraction result was zero
+      if (result == 0) {
+        flags |= 0x40;
+      }
+
+      // sign flag: result has its sign bit set
+      if ((result >> 31) & 1) {
+        flags |= 0x80;
+      }
+
+      // overflow flag: signed sub overflowed
+      if (((reg2 ^ reg1) & (reg2 ^ result) & 0x80000000U) != 0) {
+        flags |= 0x800;
+      }
+
+
+      // %eflags is register 16
+      registers[16] = flags;
+
+      // store the flags in the %eflags register
+      break;
+    }
+
   }
 
 
