@@ -151,6 +151,15 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
   // program_counter is a byte address, but instructions are 4 bytes each
   // divide by 4 to get the index into the instructions array
   instruction_t instr = instructions[program_counter / 4];
+
+  // conditional flags store:
+  unsigned int eflags = (unsigned int)registers[16];
+
+  unsigned int cf = (eflags >> 0) & 1;
+  unsigned int zf = (eflags >> 6) & 1;
+  unsigned int sf = (eflags >> 7) & 1;
+  unsigned int of = (eflags >> 11) & 1;
+
   
   switch(instr.opcode) {
     case subl:
@@ -289,6 +298,43 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
       // store the flags in the %eflags register
       break;
     }
+
+    // jump if equal: zf is set
+    case je:
+      if (zf) {
+        return program_counter + 4 + instr.immediate;
+      }
+      break;
+
+    // jump if signed < : (SF xor OF)
+    case jl:
+      if (sf ^ of) {
+        return program_counter + 4 + instr.immediate;
+      }
+      break;
+
+    // jump if signed <= : ((SF xor OF) or ZF)
+    case jle:
+      if ((sf ^ of) || zf) {
+        return program_counter + 4 + instr.immediate;
+      }
+      break;
+
+    // jump if signed >= (not (SF xor OF))
+    case jge:
+      if (!(sf ^ of)) {
+        return program_counter + 4 + instr.immediate;
+      }
+      break;
+
+    // jump if unsigned below or equal (CF or ZF)
+    case jbe:
+      if (cf || zf) {
+        return program_counter + 4 + instr.immediate;
+      }
+      break;
+
+
 
   }
 
