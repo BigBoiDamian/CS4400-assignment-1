@@ -11,7 +11,7 @@
  *
  * Some code and pseudo code has been provided as a starting point.
  *
- * Completed by: STUDENT-FILL-IN
+ * Completed by: Damian Szymanski
 */
 
 #include <stdio.h>
@@ -152,7 +152,7 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
   // divide by 4 to get the index into the instructions array
   instruction_t instr = instructions[program_counter / 4];
 
-  // conditional flags store:
+  // extract condition flags from %eflags:
   unsigned int eflags = (unsigned int)registers[16];
 
   unsigned int cf = (eflags >> 0) & 1;
@@ -337,10 +337,6 @@ unsigned int execute_instruction(unsigned int program_counter, instruction_t* in
 
 
   }
-
-
-  // TODO: Do not always return program_counter + 4
-  //       Some instructions jump elsewhere
 
   // program_counter + 4 represents the subsequent instruction
   return program_counter + 4;
